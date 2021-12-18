@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+{% load static %}
+{% load embed_video_tags %}
+
+<html>
+<style type="text/css">
+  body{
+     background-color:black;
+  }
+  .outer
+  {
+    background-color:black;
+    width:5px;
+    transition:1s;
+
+    
+    
+  }
+  .outer a
+  {
+    text-decoration: none;
+    color: white;
+  }
+  .outer a:hover
+  {
+    color: white;
+  }
+  .outer:hover
+  {
+    width:150px;
+    text-decoration:none;
+    color: white;
+    border:2px solid #2ECC71;
+    filter:brightness(4);
+  }
+
+  .left
+  {
+    width:300px;
+    background-color: black;
+    transition: .7s;
+  }
+  .top-head
+  {
+    background-image: linear-gradient(to left,#F1C40F,#1ABC9C) 
+  }
+  .score
+  {
+    background-image: linear-gradient(to left,#76448A,#1ABC9C);
+    border-radius:30px;
+  }
+  .balls
+  {
+    background-color:black;
+    border-radius: 30px;
+
+  }
+</style>
+<head>
+<title>Index | ScoreBoard</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/fontawesome.min.css">
+<link rel="stylesheet" type="text/css" href="{% static 'ps.css' %}">
+
+</head>
+
+<body>
+  <div class="container-fluid top-head text-white">
+   {% for i in hobj %}<marquee> <h4>{{i.heading_data}}</h4></marquee>{% endfor %}
+
+  </div>
+  <div class="container-fluid">
+    
+    {% for i in obj %}
+    {% video i.video  '1330x425' %}
+    
+    {% endfor %}
+    
+  </div>
+  
+  <div class="d-flex justify-content-between mb-1">
+    <a href="/admin01/index/" class="p-2 outer" data-toggle="modal" data-target="#signupModal" name=""><i class="fa fa-user-plus" aria-hidden="true"></i></a>
+    <a href="" data-toggle="modal" data-target="#exampleModal" class="p-2 outer" name=""><i class="fa fa-sign-in" aria-hidden="true"></i></a>
+  </div>
+  
+
+  <div class="container-fluid  text-white bottom mb-2">
+    <div class="d-flex justify-content-between score p-2">
+    {% for i in mobj %}
+     <div style="background-image: linear-gradient(to left,#1ABC9C,#76448A);color:white;border-radius:30px; border:1px solid white; width:160px" class=" p-3">{{i.team_name}}</div>
+     <div class="p-3 font-weight-bold">{{i.team_score}}/{{i.team_wicket}}</div>
+     {% endfor %}
+     <div class="balls w-25 p-3 text-center">
+       {% for j in Ovobj %} {{j.b1}}  {% endfor %}
+     </div>
+     <div class="p-3 font-weight-bold">Over {% for j in sovrobj %} {{j.sover}}{% endfor %}</div>
+     
+    </div>
+  </div>
+
+
+
+  <!-- upload video Link Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Admin Login</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form method="Post" action="/admin_login/">
+          {% csrf_token %}
+          <input type="text" name="usrnm" class="form-control" placeholder="Username">
+          <input type="Password" name="passwd" class="form-control" placeholder="Password">
+          <input type="submit" name="" value="Login" class="form-control btn-warning">
+         </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        
+         
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- upload video Link Modal -->
+<div class="modal fade " id="signupModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Admin Signup</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body bg-dark">
+        <form method="Post" action="/admin_signup/">
+          {% csrf_token %}
+          <input type="text" name="fname" class="form-control" placeholder="First Name">
+          <input type="text" name="lname" class="form-control" placeholder="Last Name">
+          <input type="text" name="uname" class="form-control" placeholder="Username">
+          <input type="email" name="email" class="form-control" placeholder="Email">
+          <input type="text" name="phone" class="form-control" placeholder="Mobile No">
+          <input type="text" name="usrtype" class="form-control" value="Admin" placeholder="Usertype">
+
+          <input type="Password" name="pwd" class="form-control" placeholder="Password">
+          <input type="submit" name="" value="Login" class="form-control btn-warning">
+         </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        
+         
+      </div>
+    </div>
+  </div>
+</div>
+
+	
+</body>
+</html>

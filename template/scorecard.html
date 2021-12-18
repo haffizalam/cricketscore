@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Admin Panel | Score Card</title>
+	<meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/fontawesome.min.css">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Italianno&family=Lobster&display=swap" rel="stylesheet">
+<style type="text/css">
+	  .top-head
+  {
+    background-image: linear-gradient(to left,#F1C40F,#1ABC9C) 
+  }
+  .tname a
+  {
+  	color:blue;
+  	font-size: 45px;
+  	font-family: 'Italianno', cursive;
+    text-decoration: bold;
+    border-bottom: 1px solid black;
+  }
+  .tname a:hover
+  {
+  	text-decoration: none;
+  }
+
+  .card-bg
+  {
+  	background:linear-gradient(135deg, #C56CD6 0%,#3425AF 100%);
+  	box-shadow: 10px 10px 5px grey;
+  	animation: flip-scale-down-diag-2 0.5s linear both;
+  }
+
+  @keyframes flip-scale-down-diag-2 {
+  0% {
+    transform: scale(1) rotate3d(-1, 1, 0, -180deg);
+  }
+  50% {
+    transform: scale(0.4) rotate3d(-1, 1, 0, -90deg);
+  }
+  100% {
+    transform: scale(1) rotate3d( -1, 1, 0, 0deg);
+  }
+}
+
+</style>
+</head>
+<body>
+
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+        
+  <a class="navbar-brand" href="#">NPL ScoreBoard</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#" data-toggle="modal" data-target="#updateModal">Video Link</a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          More
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="#" data-toggle="modal" data-target="#HeadingModal">Add Heading</a>
+          <a class="dropdown-item" href="#" data-toggle="modal" data-target="#signupModal">Add New Admin</a>
+          <a class="dropdown-item" href="#" data-toggle="modal" data-target="#TeamModal">Add Participating Team</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="/admin01/score_card/">Score Card</a>
+        </div>
+      </li>
+      
+    </ul>
+    <form class="form-inline my-2 my-lg-0">
+      
+     <a href="/logout/" class="btn btn-outline-success my-2 my-sm-0" type="submit">logout</a>
+    </form>
+    
+  </div>
+</nav>
+
+
+
+
+	<div class="container mt-2">
+      <div class='row'>
+        {% for i in dtobj %}
+        <div class="col-md-6 mt-2" >
+            <div class="card card-bg">
+              <div class="row">
+                <div class="tname col-12 text-center">
+                <a href="#">{{i.team_name}}</a>
+                </div>
+                
+              </div>
+              <div class="card-body">
+                <h4 class="card-title">
+                  <a href="#"></a>
+                </h4>
+                <h6 class="text-center text-white">Total Run: {{i.team_score}}</h6>
+                <p class="card-text text-center text-white">Wicket: {{i.team_wicket}}</p>
+              </div>
+              <div class="card-footer">
+                <small class="text-white">
+
+            
+                </small>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+
+            </div>
+        
+
+      </div>
+
+
+
+
+
+
+
+      <!-- upload video Link Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Upload Video Link</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form method="Post" action="/admin01/upload_Vlink/">
+        	{% csrf_token %}
+        	<input type="text" name="vlink" class="form-control">
+        	<input type="submit" name="" value="Submit" class="form-control btn-warning">
+         </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        
+         
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="HeadingModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Upload Heading</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body bg-dark">
+        <form method="Post" action="/admin01/upload_heading/">
+          {% csrf_token %}
+          <textarea class="form-control" name="upper_heading">
+            {% for i in hobj %} {{i.heading_data}} {% endfor %}
+          </textarea>
+          <input type="submit" name="" value="Submit" class="btn btn-outline-warning form-control mt-1">
+         </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-warning" data-dismiss="modal">Close</button>
+        
+         
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- upload video Link Modal -->
+<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Update Video Link</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form method="Post" action="/admin01/update_link/">
+          {% csrf_token %}
+          <input type="text" name="ulink" class="form-control">
+          <input type="submit" name="" value="Submit" class="form-control btn-warning">
+         </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        
+         
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- Admin Signup Modal -->
+<div class="modal fade " id="signupModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Admin Signup</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body bg-dark">
+        <form method="Post" action="/scoreboard/admin_signup/">
+          {% csrf_token %}
+          <input type="text" name="fname" class="form-control" placeholder="First Name">
+          <input type="text" name="lname" class="form-control" placeholder="Last Name">
+          <input type="text" name="uname" class="form-control" placeholder="Username">
+          <input type="email" name="email" class="form-control" placeholder="Email">
+          <input type="text" name="phone" class="form-control" placeholder="Mobile No">
+          <input type="text" name="usrtype" class="form-control" value="Admin" placeholder="Usertype">
+
+          <input type="Password" name="pwd" class="form-control" placeholder="Password">
+          <input type="submit" name="" value="Submit" class="form-control btn-warning">
+         </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        
+         
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Add team Modal -->
+<div class="modal fade " id="TeamModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add Participating Team</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body bg-dark">
+        <form method="Post" action="/admin01/add_team/">
+          {% csrf_token %}
+          <input type="text" name="T_name" class="form-control" placeholder="Team Name">
+          <input type="text" name="cap_name" class="form-control" placeholder="Captain Name">
+          <input type="text" name="t_score" class="form-control" placeholder="Score">
+          <input type="text" name="t_wicket" class="form-control" placeholder="Wicket">
+
+
+          <input type="submit" name="" value="Submit" class="form-control btn-warning">
+         </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        
+         
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</body>
+</html>

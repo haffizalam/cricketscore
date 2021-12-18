@@ -1,0 +1,504 @@
+{% load embed_video_tags %}
+<!DOCTYPE html>
+{% load static %}
+<html>
+<style type="text/css">
+  .score
+  {
+    background-image: linear-gradient(to left,#76448A,#1ABC9C);
+    border-radius:30px;
+    animation: flip-scale-down-diag-2 0.5s linear both;
+  }
+  @keyframes flip-scale-down-diag-2 {
+  0% {
+    transform: scale(1) rotate3d(-1, 1, 0, -180deg);
+  }
+  50% {
+    transform: scale(0.4) rotate3d(-1, 1, 0, -90deg);
+  }
+  100% {
+    transform: scale(1) rotate3d( -1, 1, 0, 0deg);
+  }
+}
+</style>
+<head>
+	<title>Admin Panel | ScoreBoard</title>
+	<meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/fontawesome.min.css">
+
+
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
+    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+  </symbol>
+  <symbol id="info-fill" fill="currentColor" viewBox="0 0 16 16">
+    <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
+  </symbol>
+  <symbol id="exclamation-triangle-fill" fill="currentColor" viewBox="0 0 16 16">
+    <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+  </symbol>
+</svg>
+<style type="text/css">
+  body
+  {
+    background-color:#ECF0F1;
+  }
+  .score
+  {
+  
+    border-radius:30px;
+    box-shadow: 10px 10px 5px grey;
+  }
+</style>
+</head>
+<body>
+ 			<nav class="navbar navbar-expand-lg navbar-light bg-light">
+        
+  <a class="navbar-brand" href="#">NPL ScoreBoard</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#" data-toggle="modal" data-target="#updateModal">Video Link</a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          More
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="#" data-toggle="modal" data-target="#HeadingModal">Add Heading</a>
+          <a class="dropdown-item" href="#" data-toggle="modal" data-target="#signupModal">Add New Admin</a>
+          <a class="dropdown-item" href="#" data-toggle="modal" data-target="#TeamModal">Add Participating Team</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="/admin01/score_card/">Score Card</a>
+          <a class="dropdown-item" href="" data-toggle="modal" data-target="#welcome_hModal">Welcome page Title</a>
+          
+        </div>
+      </li>
+      
+    </ul>
+    <form class="form-inline my-2 my-lg-0">
+      
+      <a href="/logout/" class="btn btn-outline-success my-2 my-sm-0" type="submit">Logout</a>
+    </form>
+    
+  </div>
+</nav>
+
+
+
+<table class="table table-dark mt-2">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Team Name</th>
+      <th scope="col">Captain Name</th>
+      <th scope="col">Run</th>
+      <th scope="col">Wicket</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for i in tobj %}
+    <tr>
+      <th scope="row">{{i.id}}</th>
+      <td><a href="{% url 'admin01:show_team' id=i.id%}" style="color: white;">{{i.team_name}}</a></td>
+      <td>{{i.team_captain}}</td>
+      <td>{{i.team_score}}</td>
+      <td>{{i.team_wicket}}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% for i in tdata %}
+<form method="Post" action="/admin01/update_team/">
+  {% csrf_token %}
+      <div class="container score mt-5 ">
+        <div class="row">
+          <div class="col-12">
+             <div style="background-image: linear-gradient(to left,#1ABC9C,#76448A);color:white;border-radius:30px; border:1px solid white; width:160px" class=" p-3 w-100 mb-2">{{i.team_name}}<input type="text" value="{{i.team_name}}" name="t_name" hidden=""><input type="text" name="t_captain" hidden=""></div>
+            
+                    
+          </div>
+          <div class="row">
+            <div class="col-4">
+             
+               {% for l in sovrobj %}     
+            <input type="submit" name="" class="btn btn-outline-dark btn-sm" value="Over +" onclick="ovr_plus()"><input type="number" name="ovrs" class="form-control text-center" id="ovrshow" value="{{l.sover}}"><input type="submit" name="" class="btn btn-outline-dark btn-sm" value="Over -" onclick="ovr_minus()">  {% endfor %}
+           
+            </div>
+          <div class="col-4">
+            <input type="text" id="intxt" value="{{i.team_score}}" name="t_score" class="form-control w-100 p-3 bg-success text-center text-white">
+          </div>
+          <div class="col-4">
+            <input type="text" id="wtxt" value="{{i.team_wicket}}" name="t_wicket" class="form-control w-100 p-3 bg-danger text-center text-white">
+          </div>
+        </div>
+
+
+
+        </div>
+
+        <div class="row mt-3">
+          <div class="col-4">
+              <input type="submit" class="btn btn-outline-dark btn-sm w-100" onclick="Six()" value="Six">
+            </div>
+          <div class="col-4">
+                <input type="submit" class="btn btn-outline-dark btn-sm w-100" onclick="Four()" value="Four">
+          </div>
+          <div class="col-4">
+                <input type="submit" class="btn btn-outline-dark btn-sm w-100" onclick="Three()" value="Three">
+          </div>
+        </div>
+
+        <div class="row mt-3 mb-2">
+          <div class="col-4">
+              <input type="submit" class="btn btn-outline-dark btn-sm w-100" onclick="Two()" value="Two">
+            </div>
+          <div class="col-4">
+                <input type="submit" class="btn btn-outline-dark btn-sm w-100" onclick="Single()" value="Single">
+          </div>
+          <div class="col-4">
+                <input type="submit" class="btn btn-outline-dark btn-sm w-100" onclick="decrease()" value="-1">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6 d-flex justify-content-center mx-auto">
+           {% for i in ballobj %} 
+           <input type="text" class="form-control w-25 text-center" id="over" value="{{i.b1}}" name="b_1">{% endfor %}
+          </div>
+          <div class="col-3">
+            <input type="submit" name="" class="btn btn-outline-dark btn-sm" value="Dot" onclick="dt()">
+          </div>
+          <div class="col-3">
+            <input type="submit" name="" class="btn btn-outline-warning btn-sm" value="Over" onclick="overend()">
+          </div>
+        </div>
+      </div>
+      <div class="row mt-3">
+        <div class="col-6">
+          <input type="submit" name="" value="W +" class="btn btn-outline-dark btn-sm w-100" onclick="wincrease()">
+        </div>
+        <div class="col-6">
+          <input type="submit" name="" value="W -" class="btn btn-outline-dark btn-sm w-100" onclick="wdecrease()">
+        </div>
+      </div>
+     
+     
+     <input type="text" name="b_2" hidden="" value="0">
+     <input type="text" name="b_3" hidden="" value="0">
+     <input type="text" name="b_4" hidden="" value="0">
+     <input type="text" name="b_5" hidden="" value="0">
+     <input type="text" name="b_6" hidden="" value="0">
+     <input type="text" name="ovr" hidden="" value="0">
+   
+</form>
+   {% endfor %}          
+
+<script type="text/javascript">
+    let textBox = parseInt(document.getElementById("intxt").value);
+    let txt = document.getElementById("over").value
+    function overend()
+    {
+      document.getElementById("over").value=""
+    }
+    function dt()
+    {
+                txt=txt+=0
+                document.getElementById('over').value=" "+txt
+                console.log(txt)
+    }
+    function Six(){
+               
+                
+              
+                textBox=textBox+=6
+                document.getElementById('intxt').value=textBox
+
+                console.log(textBox)
+              
+                txt=txt+=6
+                document.getElementById('over').value=txt
+                console.log(txt)
+
+              }
+  function Four(){
+               
+                
+              
+                textBox=textBox+=4
+                document.getElementById('intxt').value=textBox
+
+                console.log(textBox)
+                txt=txt+=4
+                document.getElementById('over').value=txt
+                console.log(txt)
+
+                
+
+              }
+  function Three(){
+               
+                
+              
+                textBox=textBox+=3
+                document.getElementById('intxt').value=textBox
+
+                console.log(textBox)
+                
+
+              }
+  function Two(){
+               
+                
+              
+                textBox=textBox+=2
+                document.getElementById('intxt').value=textBox
+
+                console.log(textBox)
+                
+                txt=txt+=2
+                document.getElementById('over').value=txt
+                console.log(txt)
+
+              }
+  function Single(){
+               
+                
+              
+                textBox=textBox+=1
+                document.getElementById('intxt').value=textBox
+
+                console.log(textBox)
+                txt=txt+=1
+                document.getElementById('over').value=txt
+                console.log(txt)
+
+
+              }
+
+            function decrease(){
+              var textBox = document.getElementById("intxt");
+                textBox.value--;
+            }
+ function wincrease(){
+              var textBox = document.getElementById("wtxt");
+                textBox.value++;
+
+                txt=txt+=0
+                document.getElementById('over').value=" "+txt
+                console.log(txt)
+            }
+
+function wdecrease(){
+              var textBox = document.getElementById("wtxt");
+                textBox.value--;
+            }
+function ovr_plus(){
+              var ovrBox = document.getElementById("ovrshow");
+                ovrBox.value++;
+            }
+
+function ovr_minus(){
+              var ovrBox = document.getElementById("ovrshow");
+                ovrBox.value--;
+            }
+ 
+   </script>
+
+<!-- upload video Link Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Upload Video Link</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form method="Post" action="/admin01/upload_Vlink/">
+        	{% csrf_token %}
+        	<input type="text" name="vlink" class="form-control">
+        	<input type="submit" name="" value="Submit" class="form-control btn-warning">
+         </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        
+         
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="HeadingModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Upload Heading</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body bg-dark">
+        <form method="Post" action="/admin01/upload_heading/">
+          {% csrf_token %}
+          <textarea class="form-control" name="upper_heading">
+            {% for i in hobj %} {{i.heading_data}} {% endfor %}
+          </textarea>
+          <input type="submit" name="" value="Submit" class="btn btn-outline-warning form-control mt-1">
+         </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-warning" data-dismiss="modal">Close</button>
+        
+         
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- upload video Link Modal -->
+<div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Update Video Link</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form method="Post" action="/admin01/update_link/">
+          {% csrf_token %}
+          <input type="text" name="ulink" class="form-control">
+          <input type="submit" name="" value="Submit" class="form-control btn-warning">
+         </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        
+         
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- Admin Signup Modal -->
+<div class="modal fade " id="signupModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Admin Signup</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body bg-dark">
+        <form method="Post" action="/scoreboard/admin_signup/">
+          {% csrf_token %}
+          <input type="text" name="fname" class="form-control" placeholder="First Name">
+          <input type="text" name="lname" class="form-control" placeholder="Last Name">
+          <input type="text" name="uname" class="form-control" placeholder="Username">
+          <input type="email" name="email" class="form-control" placeholder="Email">
+          <input type="text" name="phone" class="form-control" placeholder="Mobile No">
+          <input type="text" name="usrtype" class="form-control" value="Admin" placeholder="Usertype">
+
+          <input type="Password" name="pwd" class="form-control" placeholder="Password">
+          <input type="submit" name="" value="Submit" class="form-control btn-warning">
+         </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        
+         
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Add team Modal -->
+<div class="modal fade " id="TeamModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add Participating Team</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body bg-dark">
+        <form method="Post" action="/admin01/add_team/">
+          {% csrf_token %}
+          <input type="text" name="T_name" class="form-control" placeholder="Team Name">
+          <input type="text" name="cap_name" class="form-control" placeholder="Captain Name">
+          <input type="text" name="t_score" class="form-control" placeholder="Score">
+          <input type="text" name="t_wicket" class="form-control" placeholder="Wicket">
+
+
+          <input type="submit" name="" value="Submit" class="form-control btn-warning">
+         </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        
+         
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade " id="welcome_hModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add Welcome Page Title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body bg-dark">
+        <form method="Post" action="/admin01/welcome_header/">
+          {% csrf_token %}
+          <input type="text" name="header1" class="form-control" placeholder="Header 1">
+          <input type="text" name="header2" class="form-control" placeholder="Header 2">
+          
+
+
+          <input type="submit" name="" value="Submit" class="form-control btn-warning">
+         </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        
+         
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+</body>
+</html>

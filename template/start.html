@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+	<title></title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.3/css/fontawesome.min.css">
+ 
+</head>
+<style type="text/css">
+	h1
+	{
+	  
+      letter-spacing:1px;
+      color:#6495ED;
+      background:linear-gradient(135deg, #FF57B9 30%,#A704FD 30%,#57ca85 40%);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+	   animation: anim2 1s alternate linear;
+	}
+	.img-graphics
+	{
+		animation: anim1 1s alternate linear
+	}
+
+@keyframes anim2 {
+	to{margin-top:0;}
+	from{margin-top:200px;}
+				} 
+
+	h3
+	{
+	  letter-spacing:1px;
+      color:#6495ED;
+      background:linear-gradient(135deg, #0FF0B3 0%,#036ED9 100%);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+	   animation: anim2 1s alternate linear;
+		animation: anim1 .9s alternate linear;
+	}
+
+@keyframes anim1 {
+  0% {
+    transform: scale(1) rotate3d(-1, 1, 0, -180deg);
+  }
+  50% {
+    transform: scale(0.4) rotate3d(-1, 1, 0, -90deg);
+  }
+  100% {
+    transform: scale(1) rotate3d( -1, 1, 0, 0deg);
+  }
+}
+.btn-sm
+{
+	background:linear-gradient(135deg, #fad961 0%,#f76b1c 100%);
+}
+
+</style>
+<body>
+	<div class="container mt-5">
+		<div class="row">
+			<div class="col-6">
+		{%for i in wpage%}
+		<div class="mx-auto">
+		<h1>{{i.h1}}</h1>
+		
+    	<h3>{{i.h2}}</h3>
+    	<a href="/index/"class=" btn btn-outline-dark btn-sm w-25 mb-5">Start</a>
+    
+    	</div>
+    	{% endfor %}
+    		</div>
+    		<div class="col-6">
+		<img src="https://image.freepik.com/free-vector/cricket-abstract-concept-vector-illustration-professional-player-sports-equipment-cricket-championship-playground-field-international-league-play-ball-outdoor-stadium-abstract-metaphor_335657-4266.jpg" class="float-right w-100 h-100 img-graphics">
+		</div>
+
+    	</div>
+	</div>
+		    
+
+	<div class="text-right mr-2 fixed-bottom">
+		<p class="text-dark">Developed by Aymeen Digitals<img src="{% static 'profilepic.png' %}" style="width: 50px;height: 50px;"></p>
+	</div>
+
+	
+</body>
+</html>
