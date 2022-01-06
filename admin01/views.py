@@ -1,10 +1,14 @@
 from django.shortcuts import render,redirect
-from .models import Item,Team,Heading,Overs,Over_count,Maindata,welcomepage,show_over
+from .models import *
+from django.contrib.auth.decorators import login_required
+
 
 
 # Create your views here.
+@login_required
 def index(request):
-	
+	opobj=opponent.objects.all()
+	nameobj=Batsman_name.objects.all()
 	obj=Item.objects.all()
 	tobj=Team.objects.all()
 	hobj=Heading.objects.all()
@@ -20,8 +24,8 @@ def index(request):
 	print(datain)
 	
 	a=['Updated successfully !']
-	return render(request,'adminpanel.html',{'obj':obj,'tobj':tobj,'hobj':hobj,'a':a,'blobj':blobj,'datain':datain,'ovtobj':ovtobj})
-
+	return render(request,'adminpanel.html',{'opobj':opobj,'obj':obj,'tobj':tobj,'hobj':hobj,'a':a,'blobj':blobj,'datain':datain,'ovtobj':ovtobj,'nameobj':nameobj})
+@login_required
 def upload_Vlink(request):
 	
 	if request.method=='POST':
@@ -33,6 +37,7 @@ def upload_Vlink(request):
 		
 			
 	return redirect('/admin01/index/')
+@login_required
 def upload_heading(request):
 	hobj=Heading.objects.all()
 	if request.method=='POST':
@@ -41,7 +46,7 @@ def upload_heading(request):
 		
 	return redirect('/admin01/index/')
 
-
+@login_required
 def update_link(request):
 	vobj=Item.objects.all()
 	if request.method=='POST':
@@ -63,7 +68,7 @@ def update_link(request):
 			datain.append(i)
 		print(datain)
 	return redirect('/admin01/index/')'''
-
+@login_required
 def add_team(request):
 	if request.method=='POST':
 		tname=request.POST['T_name']
@@ -74,6 +79,8 @@ def add_team(request):
 		tobj=Team(team_name=tname,team_captain=capname,team_score=tscore,team_wicket=twicket)
 		tobj.save()
 	return redirect('/admin01/index/')
+
+@login_required
 def welcome_header(request):
 	wpobj=welcomepage.objects.all()
 	if request.method=='POST':
@@ -84,8 +91,9 @@ def welcome_header(request):
 		wpobj.update(h1=heading1,h2=heading2)
 		a="Homepage Updated Successfully !"
 	return redirect('/admin01/index/')
-
+@login_required
 def show_team(request,id):
+	opobj=opponent.objects.all()
 	ovtobj=Over_count.objects.all()
 	for j in ovtobj:
 		box=int(j.over)
@@ -107,7 +115,8 @@ def show_team(request,id):
 
 	
 
-	return render(request,'adminpanel.html',{'obj':obj,'tobj':tobj,'tdata':tdata,'ovtobj':ovtobj,'datain':datain})
+	return render(request,'adminpanel.html',{'opobj':opobj,'obj':obj,'tobj':tobj,'tdata':tdata,'ovtobj':ovtobj,'datain':datain})
+@login_required
 def score_card(request):
 	hobj=Heading.objects.all()
 	dtobj=Team.objects.all()
@@ -115,12 +124,17 @@ def score_card(request):
 
 
 
-
+@login_required
 def update_team(request):
-	
+	opobj=opponent.objects.all()
+	nameobj=Batsman_name.objects.all()
+	trobj=Target_run.objects.all()
 	sovrobj=show_over.objects.all()	
 	a=1
-	tdata=datateam(request,a)
+	try:
+		tdata=datateam(request,a)
+	except:
+		return redirect('/admin01/index/')
 	obj=Item.objects.all()
 	tobj=Team.objects.all()
 	ballobj=Overs.objects.all()
@@ -140,12 +154,14 @@ def update_team(request):
 	for n in range(1,box+1):
 		datain.append(n)
 	print(datain)
-	try:
+	
 
+	try:
 		if request.method=='POST':
 			tscore=request.POST['t_score']
 			twicket=request.POST['t_wicket']
 			tdata.update(team_score=tscore,team_wicket=twicket)
+	
 		if request.method=='POST':
 			ball_1=request.POST['b_1']
 			ball_2=request.POST['b_2']
@@ -154,11 +170,13 @@ def update_team(request):
 			ball_5=request.POST['b_5']
 			ball_6=request.POST['b_6']
 			ballobj.update(b1=ball_1,b2=ball_2,b3=ball_3,b4=ball_4,b5=ball_5,b6=ball_6)
+	
 		if request.method=='POST':
 			ovtobj=Over_count.objects.all()
 			ovr_data=request.POST['ovr']
 			ovtobj.update(over=ovr_data)
 			a='Data updated successfully !'
+	
 		if request.method=='POST':
 			tname=request.POST['t_name']
 			capname=request.POST['t_captain']
@@ -171,15 +189,47 @@ def update_team(request):
 		if request.method=='POST':
 			sovrs=request.POST['ovrs']
 			sovrobj.update(sover=sovrs)
+		
+		if request.method=='POST':
 			
-		return render(request,'adminpanel.html',{'obj':obj,'tobj':tobj,'tdata':tdata,'ballobj':ballobj,'datain':datain,'sovrobj':sovrobj})
+			r_target=request.POST['tgt']
+			trobj.update(TR=r_target)
+	
+	
+
+	
+		return render(request,'adminpanel.html',{'opobj':opobj,'nameobj':nameobj,'obj':obj,'tobj':tobj,'tdata':tdata,'ballobj':ballobj,'datain':datain,'sovrobj':sovrobj,'trobj':trobj})
 	except:
-		return render(request,'adminpanel.html',{'obj':obj,'tobj':tobj,'tdata':tdata,'ballobj':ballobj,'datain':datain,'sovrobj':sovrobj})
+		return render(request,'adminpanel.html',{'opobj':opobj,'nameobj':nameobj,'obj':obj,'tobj':tobj,'tdata':tdata,'ballobj':ballobj,'datain':datain,'sovrobj':sovrobj,'trobj':trobj})
+     
+@login_required
+def add_batsman(request):
+	nameobj=Batsman_name.objects.all()
+	if request.method=='POST':
+		batsman1=request.POST['bm1']
+		batsman2=request.POST['bm2']
+		ball=request.POST['blr']
+		nameobj.update(batman1=batsman1,batman2=batsman2,baller=ball)
+		
+		print(nameobj)
+	return redirect('/admin01/index/')
 
-
+@login_required
 def del_team(request,id):
-	pass
+	tobj=Team.objects.get(id=id)
+	tobj.delete()
+	return redirect('/admin01/index/')
 
+@login_required
+def add_target(request):
+	if request.method=='POST':
+		trobj=Target_run.objects.all()
+		r_target=request.POST['tgt']
+		trobj.update(TR=r_target)
+		
+	return redirect('/admin01/index/')
+
+@login_required
 def showover(request):
 	if request.method=='POST':
 		#sovrobj=show_over.objects.all()
@@ -187,4 +237,11 @@ def showover(request):
 		ovtobj=show_over(sover=svr)
 		ovtobj.save()
 
-
+@login_required
+def add_opponent(request,id):
+	tobj=Team.objects.get(id=id)
+	opobj=opponent.objects.all()
+	opobj.update(team=tobj)
+	
+	return redirect('/admin01/index/')
+	

@@ -4,13 +4,18 @@ from django.http import HttpResponse
 from .models import UserProfile
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth import authenticate, login, logout
-from admin01.models import Item,Team,Heading,Overs,Over_count,Maindata,welcomepage,show_over
+from admin01.models import Item,Team,Heading,Overs,Over_count,Maindata,welcomepage,show_over,Target_run,Batsman_name,opponent
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+
 
 
 
 
 def index(request):
+	opobj=opponent.objects.all()
+	nameobj=Batsman_name.objects.all()
+	trobj=Target_run.objects.all()
 	sovrobj=show_over.objects.all()
 	obj=Item.objects.all()
 	mobj=Maindata.objects.all()
@@ -18,7 +23,8 @@ def index(request):
 	Ovobj=Overs.objects.all()
 	ovtobj=Over_count.objects.all()
 	
-	return render(request,'index.html',{'obj':obj,'hobj':hobj,'Ovobj':Ovobj,'ovtobj':ovtobj,'mobj':mobj,'sovrobj':sovrobj}) 
+	return render(request,'index.html',{'opobj':opobj,'obj':obj,'hobj':hobj,'Ovobj':Ovobj,'ovtobj':ovtobj,'mobj':mobj,'sovrobj':sovrobj,'trobj':trobj,'nameobj':nameobj}) 
+
 def start(request):
 	wpage=welcomepage.objects.all()
 	return render(request,'start.html',{'wpage':wpage})
@@ -65,7 +71,7 @@ def admin_login(request):
 			return HttpResponse("<h1>Invalid Credentials</h1>")
 
 
-
+@login_required
 def logout_call(request):
 	logout(request)
 	return redirect('/index/')

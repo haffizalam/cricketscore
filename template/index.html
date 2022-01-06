@@ -46,19 +46,52 @@
   }
   .score
   {
-    background-image: linear-gradient(to left,#76448A,#1ABC9C);
+    background-image: linear-gradient(to top,#979A9A ,white,#979A9A);
     border-radius:30px;
   }
-  .balls
+  .score-lower
   {
-    background-color:black;
-    border-radius: 30px;
+    background-image: linear-gradient(to top,#95A5A6,white,#95A5A6);
+    border-radius:30px;
+  }
+  .d1
+  {
+    border-top-right-radius:10px;
+    border-bottom-right-radius:40px;
+    background-color:#070AF4;
+    
+  }
 
+  .this_over
+  {
+    background-image: linear-gradient(to right,#ffdd00,#fbb034);
+    border-radius: 20px;
+  }
+  .vs
+  {
+       width: 0;
+      height: 0;
+      border-left: 80px solid transparent;
+      border-right: 80px solid transparent;
+      border-top: 40px solid #009ffd;
+      background-color: #2a2a72;
+      box-shadow: 0 -5px 50px 15px #2a2a72;
+
+      
+  }
+  .team-a
+  {
+    background-image: linear-gradient(to right,#009ffd,#2a2a72);
+  }
+   .team-b
+  {
+    background-image: linear-gradient(to right,#2a2a72,#009ffd);
   }
 </style>
 <head>
 <title>Index | ScoreBoard</title>
 <meta charset="utf-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -91,18 +124,54 @@
   
 
   <div class="container-fluid  text-white bottom mb-2">
-    <div class="d-flex justify-content-between score p-2">
-    {% for i in mobj %}
-     <div style="background-image: linear-gradient(to left,#1ABC9C,#76448A);color:white;border-radius:30px; border:1px solid white; width:160px" class=" p-3">{{i.team_name}}</div>
-     <div class="p-3 font-weight-bold">{{i.team_score}}/{{i.team_wicket}}</div>
-     {% endfor %}
-     <div class="balls w-25 p-3 text-center">
-       {% for j in Ovobj %} {{j.b1}}  {% endfor %}
-     </div>
-     <div class="p-3 font-weight-bold">Over {% for j in sovrobj %} {{j.sover}}{% endfor %}</div>
+    <div class="row">
+       {% for i in mobj %}
+      <div class="col-5 team-a text-center font-weight-bold p-1">{{i.team_name}}</div>
+       {% endfor %}
+      <div class="col-2  text-center vs"><span></span></div>
+      {% for i in opobj %}
+      <div class="col-5 team-b text-center font-weight-bold text-center p-1">{{i.team.team_name}}</div>
+      {% endfor %}
      
     </div>
+
+    <div class="row score bg-dark">
+    {% for i in mobj %}
+    <div class="col-md-3 d1">
+     <div style="color:white;border-radius:30px; width:160px;" class="p-2 text-center">{{i.team_name}}</div>
+     </div>
+
+     <div class="col-md-3">
+     <div class="p-2 font-weight-bold text-center" style="border-radius:30px; border:2px solid #979A9A; color:#070AF4;" id="run">{{i.team_score}}/{{i.team_wicket}}</div>
+     </div>
+     {% endfor %}
+
+     <div class="col-md-2">
+      <div class=" font-weight-bold w-50 text-white text-center p-2" style="color:#070AF4; background-color:grey; border-radius:30px;"> {% for j in sovrobj %} {{j.sover}}{% endfor %} Over</div>
+      </div>
+
+     <div class="d-flex">
+     <div class="p-2 font-weight-bold" style="color:#070AF4;">This Over-<span class="this_over p-1"> {% for j in Ovobj %} {{j.b1}}{% endfor %}</span></div>
+      </div>
+      
+    </div>
+
+    <div class="row score-lower">
+      {% for i in nameobj %}
+      <div class="col-md-3 p-1 font-weight-bold text-center" style="color:#070AF4;">{{i.batman1}}<span style="color:red">*</span></div>
+      <div class="col-md-3 p-1 font-weight-normal" style="color:#070AF4;">{{i.batman2}}</div>
+      <div class="col-md-3 p-1 text-dark font-weight-bold">| {{i.baller}} </div>
+      <div class="col-md-3 font-italic" style="color:#070AF4;">
+          <div class="d-flex p-1"><span class="font-weight-bold" id="need">Need to win-</span>
+        {% for t in trobj %}
+       <input type="text" class=" text-center" style="color:white; background-color:#070AF4;border-radius:30px; border:2px solid #95A5A6;"  value="{{t.TR}}" id="target" disabled="" />{%endfor%}
+            </div>
+
+       </div>
+    </div>
+    {% endfor %}
   </div>
+     
 
 
 
@@ -167,6 +236,25 @@
   </div>
 </div>
 
-	
+	<script type="text/javascript">
+   window.setTimeout(function () {
+  window.location.reload();
+}, 30000);
+
+
+ var sd=document.getElementById('target').value;
+ 
+ 
+ if (sd==='NaN')
+ {
+    document.getElementById('target').value='1st Inning'
+     document.getElementById('need').style.display = "none"
+ }
+ 
+  else{
+    document.getElementById('target').style.display = "inline-block"
+  }
+
+  </script>
 </body>
 </html>

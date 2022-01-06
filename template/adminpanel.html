@@ -57,6 +57,10 @@
     border-radius:30px;
     box-shadow: 10px 10px 5px grey;
   }
+  i
+  {
+    color: white;
+  }
 </style>
 </head>
 <body>
@@ -79,13 +83,15 @@
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           More
         </a>
+
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" href="#" data-toggle="modal" data-target="#HeadingModal">Add Heading</a>
-          <a class="dropdown-item" href="#" data-toggle="modal" data-target="#signupModal">Add New Admin</a>
+          
           <a class="dropdown-item" href="#" data-toggle="modal" data-target="#TeamModal">Add Participating Team</a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="/admin01/score_card/">Score Card</a>
           <a class="dropdown-item" href="" data-toggle="modal" data-target="#welcome_hModal">Welcome page Title</a>
+          <a class="dropdown-item" href="" data-toggle="modal" data-target="#target_Modal">Target Run</a>
           
         </div>
       </li>
@@ -99,60 +105,110 @@
   </div>
 </nav>
 
+<div class="container">
+  <form method="Post" action="/admin01/add_batsman/">
+    {% csrf_token %}
+   <div class="row">
+        {% for i in nameobj %}
+          <div class="col-3"><span class="text-center">Striker</span> 
+            <input type="text" name="bm1" id="bm1" class="form-control bg-dark text-white text-center" value="{{i.batman1}}" placeholder="Enter Batsman Name (Strike)">
+          </div>
+
+          <div class="col-2"><span><i class="fa fa-arrows-h" aria-hidden="true"></i></span>
+            <input type="submit" name="" onclick="replace()" class="btn btn-warning form-control" value="Replace">
+          </div>
+
+          <div class="col-3"><span>Non-Striker</span>
+            <input type="text" name="bm2" id="bm2" class="form-control bg-dark text-white text-center" value="{{i.batman2}}" placeholder="Enter Batsman Name (Non-Strike)">
+          </div>
+
+           <div class="col-2"><span>Baller</span>
+            <input type="text" name="blr" class="form-control bg-secondary text-white text-center" value="{{i.baller}}" placeholder="Enter Baller Name">
+          </div>
+
+           <div class="col-2"><span class="fa fa-thumbs-up" aria-hidden="true"></i></span>
+              <input type="submit" name="" class="btn btn-outline-warning form-control">
+          </div>
+        </div>
+        {% endfor %}
+
+       
+   </form>   
+</div>
 
 
 <table class="table table-dark mt-2">
   <thead>
     <tr>
-      <th scope="col">#</th>
+      <th scope="col"></th>
       <th scope="col">Team Name</th>
       <th scope="col">Captain Name</th>
       <th scope="col">Run</th>
       <th scope="col">Wicket</th>
+       <th scope="col">Remove</th>
     </tr>
   </thead>
   <tbody>
     {% for i in tobj %}
     <tr>
-      <th scope="row">{{i.id}}</th>
+      <th scope="row"><a href="{% url 'admin01:add_opponent' id=i.id %}"><i class="fa fa-chevron-right" aria-hidden="true"></i></a></th>
       <td><a href="{% url 'admin01:show_team' id=i.id%}" style="color: white;">{{i.team_name}}</a></td>
       <td>{{i.team_captain}}</td>
       <td>{{i.team_score}}</td>
       <td>{{i.team_wicket}}</td>
+      <td><a href="{% url 'admin01:del_team' id=i.id %}" data-toggle="tooltip" data-placement="top" title="Add as Oponent"><i class="fa fa-trash-o" aria-hidden="true"></i></a></td>
     </tr>
     {% endfor %}
   </tbody>
 </table>
 
 {% for i in tdata %}
-<form method="Post" action="/admin01/update_team/">
+<form method="Post" action="/admin01/update_team/" class="fixed-bottom">
   {% csrf_token %}
       <div class="container score mt-5 ">
         <div class="row">
           <div class="col-12">
-             <div style="background-image: linear-gradient(to left,#1ABC9C,#76448A);color:white;border-radius:30px; border:1px solid white; width:160px" class=" p-3 w-100 mb-2">{{i.team_name}}<input type="text" value="{{i.team_name}}" name="t_name" hidden=""><input type="text" name="t_captain" hidden=""></div>
+             <div style="background-image: linear-gradient(to left,#1ABC9C,#76448A);color:white;border-radius:30px; border:1px solid white; width:160px" class=" p-3 w-100 mb-2 d-flex justify-content-between">{{i.team_name}}<input type="text" value="{{i.team_name}}" name="t_name" hidden=""><input type="text" name="t_captain" hidden="">
+
+                 {% for i in opobj %}
+            <div>
+                {{i.team.team_name}}
+            </div>
+            {% endfor %}
+             </div>
+
+           
             
                     
           </div>
           <div class="row">
-            <div class="col-4">
+            <div class="col-3 d-flex">
              
                {% for l in sovrobj %}     
-            <input type="submit" name="" class="btn btn-outline-dark btn-sm" value="Over +" onclick="ovr_plus()"><input type="number" name="ovrs" class="form-control text-center" id="ovrshow" value="{{l.sover}}"><input type="submit" name="" class="btn btn-outline-dark btn-sm" value="Over -" onclick="ovr_minus()">  {% endfor %}
+            <input type="submit" name="" class="btn btn-outline-dark btn-sm" value="Over +" onclick="ovr_plus()"><input type="number" name="ovrs" class="form-control text-center w-50" id="ovrshow" value="{{l.sover}}"><input type="submit" name="" class="btn btn-outline-dark btn-sm" value="Over -" onclick="ovr_minus()">  {% endfor %}
            
             </div>
-          <div class="col-4">
+          <div class="col-3">
             <input type="text" id="intxt" value="{{i.team_score}}" name="t_score" class="form-control w-100 p-3 bg-success text-center text-white">
           </div>
-          <div class="col-4">
+          <div class="col-2">
             <input type="text" id="wtxt" value="{{i.team_wicket}}" name="t_wicket" class="form-control w-100 p-3 bg-danger text-center text-white">
           </div>
+          {% for i in trobj %}
+          <div class="col-2">
+            <input type="text" id="tg" min="0" max="300" value="{{i.TR}}" name="tgt" class="form-control w-100 p-3 bg-warning text-center text-dark">
+          </div>
+           <div class="col-2">
+           <input type="submit" name="" value="Set Data" class="btn btn-secondary text-warning" onclick="show_target()">
+          </div>
+          {% endfor %}
         </div>
 
 
 
         </div>
 
+       
         <div class="row mt-3">
           <div class="col-4">
               <input type="submit" class="btn btn-outline-dark btn-sm w-100" onclick="Six()" value="Six">
@@ -190,11 +246,14 @@
         </div>
       </div>
       <div class="row mt-3">
-        <div class="col-6">
-          <input type="submit" name="" value="W +" class="btn btn-outline-dark btn-sm w-100" onclick="wincrease()">
+        <div class="col-4">
+          <input type="submit" name="" value="W +" class="btn btn-outline-danger btn-sm w-100" onclick="wincrease()">
         </div>
-        <div class="col-6">
-          <input type="submit" name="" value="W -" class="btn btn-outline-dark btn-sm w-100" onclick="wdecrease()">
+        <div class="col-4">
+          <input type="submit" name="" value="White Ball" class="btn btn-outline-primary btn-sm w-100" onclick="wball()">
+        </div>
+        <div class="col-4">
+          <input type="submit" name="" value="W -" class="btn btn-outline-danger btn-sm w-100" onclick="wdecrease()">
         </div>
       </div>
      
@@ -212,6 +271,8 @@
 <script type="text/javascript">
     let textBox = parseInt(document.getElementById("intxt").value);
     let txt = document.getElementById("over").value
+    let t=   parseInt(document.getElementById('tg').value);
+
     function overend()
     {
       document.getElementById("over").value=""
@@ -219,7 +280,7 @@
     function dt()
     {
                 txt=txt+=0
-                document.getElementById('over').value=" "+txt
+                document.getElementById('over').value=txt+'  '
                 console.log(txt)
     }
     function Six(){
@@ -232,8 +293,12 @@
                 console.log(textBox)
               
                 txt=txt+=6
-                document.getElementById('over').value=txt
+                document.getElementById('over').value=txt+'  '
                 console.log(txt)
+
+              l=t-6
+              document.getElementById('tg').value=l;
+              console.log(l)
 
               }
   function Four(){
@@ -245,8 +310,11 @@
 
                 console.log(textBox)
                 txt=txt+=4
-                document.getElementById('over').value=txt
+                document.getElementById('over').value=txt+'  '
                 console.log(txt)
+
+              l=t-4
+              document.getElementById('tg').value=l;
 
                 
 
@@ -257,7 +325,8 @@
               
                 textBox=textBox+=3
                 document.getElementById('intxt').value=textBox
-
+                txt=txt+=3
+                document.getElementById('over').value=txt+'  '
                 console.log(textBox)
                 
 
@@ -272,9 +341,11 @@
                 console.log(textBox)
                 
                 txt=txt+=2
-                document.getElementById('over').value=txt
+                document.getElementById('over').value=txt+'  '
                 console.log(txt)
 
+              l=t-2
+              document.getElementById('tg').value=l;
               }
   function Single(){
                
@@ -285,22 +356,25 @@
 
                 console.log(textBox)
                 txt=txt+=1
-                document.getElementById('over').value=txt
+                document.getElementById('over').value=txt+'  '
                 console.log(txt)
 
-
+              l=t-1
+              document.getElementById('tg').value=l;
               }
 
             function decrease(){
               var textBox = document.getElementById("intxt");
                 textBox.value--;
+            l=t+1
+            document.getElementById('tg').value=l;
             }
  function wincrease(){
               var textBox = document.getElementById("wtxt");
                 textBox.value++;
 
-                txt=txt+=0
-                document.getElementById('over').value=" "+txt
+                txt=txt+='W'
+                document.getElementById('over').value=txt+'  '
                 console.log(txt)
             }
 
@@ -318,6 +392,43 @@ function ovr_minus(){
                 ovrBox.value--;
             }
  
+ function wball(){
+               
+                
+              
+                textBox=textBox+=1
+                document.getElementById('intxt').value=textBox
+                console.log(textBox)
+
+              l=t-1
+              document.getElementById('tg').value=l;
+                
+
+
+              }
+  function trgt()
+  {
+            l=textBox+t
+
+            
+          document.getElementById('tg').value=l;
+          
+            
+            
+  }
+
+  function replace()
+  {
+     let a1=document.getElementById('bm1').value;
+     let a2=document.getElementById('bm2').value;
+
+     document.getElementById('bm1').value=a2;
+     document.getElementById('bm2').value=a1;
+
+  }
+
+  
+
    </script>
 
 <!-- upload video Link Modal -->
@@ -497,6 +608,35 @@ function ovr_minus(){
   </div>
 </div>
 
+
+<div class="modal fade " id="target_Modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add Target</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body bg-dark">
+        <form method="Post" action="/admin01/add_target/">
+          {% csrf_token %}
+          <input type="text" name="tgt" class="form-control" placeholder="Header 1">
+        
+          
+
+
+          <input type="submit" name="" value="Submit" class="form-control btn-warning">
+         </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        
+         
+      </div>
+    </div>
+  </div>
+</div>
 
 
 

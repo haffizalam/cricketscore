@@ -45,3 +45,13 @@ class welcomepage(models.Model):
 class show_over(models.Model):
 	sover=models.CharField(max_length=100)
 
+class Target_run(models.Model):
+	TR=models.CharField(max_length=100)
+
+
+class Batsman_name(models.Model):
+	batman1=models.CharField(max_length=20)
+	batman2=models.CharField(max_length=20)
+	baller=models.CharField(max_length=20)
+class opponent(models.Model):
+	team=models.ForeignKey(Team, on_delete=models.CASCADE)
